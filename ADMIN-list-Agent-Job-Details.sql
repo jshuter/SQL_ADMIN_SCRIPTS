@@ -1,3 +1,4 @@
+
 -- SQL SERVER jobs
 SELECT j.name, j.enabled,  j.description, s.database_name, s.last_run_date, s.server, s.step_name, s.command
 FROM msdb.dbo.sysjobs j 

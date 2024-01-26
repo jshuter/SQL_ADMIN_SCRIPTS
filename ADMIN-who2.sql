@@ -37,6 +37,9 @@ INSERT INTO #sp_who3 SELECT * FROM #sp_who2
 truncate table #sp_who2 
 INSERT INTO #sp_who2 EXEC sp_who2
 
+--select * from #sp_who2
+--select * from #sp_who3
+
 -- display results 
 SELECT 
 OLD.SPID, 
@@ -53,7 +56,6 @@ old.diskio as 'OLD IO', new.diskio as 'NEW IO' ,  new.diskio - old.diskio as 'IO
 
 FROM        #sp_who2 as NEW 
 FULL OUTER JOIN #sp_who3 as OLD ON OLD.SPID = NEW.SPID
-WHERE       OLD.DBName like 'nfscouts%'
 ORDER BY    'CPU DELTA' desc-- OLD.cputime desc
 
 
