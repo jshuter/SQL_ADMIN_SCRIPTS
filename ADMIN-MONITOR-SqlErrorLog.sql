@@ -16,7 +16,7 @@ WITH DATA AS (
 		logger, 
 		callsite
 	FROM 
-		CI.ElectrumPersistent.LOG.MessageLog 
+		PR.ElectrumPersistent.LOG.MessageLog 
 	WHERE 
 		logged BETWEEN @StartDate AND @EndDate
 		AND Level not in ('Trace', 'Info', 'Debug')
@@ -33,7 +33,7 @@ ORDER BY D.FullDate desc, Level, logger, Callsite
 SELECT
 	* 
 FROM 
-	CI.ElectrumPersistent.LOG.MessageLog 
+	PR.ElectrumPersistent.LOG.MessageLog 
 WHERE 
 	logged BETWEEN @StartDate AND @EndDate
 	AND Level not in ('Trace', 'Info', 'Debug', 'Warn')
