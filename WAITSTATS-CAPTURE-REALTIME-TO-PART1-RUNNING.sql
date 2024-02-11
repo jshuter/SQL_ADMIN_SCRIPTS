@@ -4,7 +4,7 @@ begin transaction
 
 UPDATE smtr.OP.Account_Master SET ModifiedBy = 'test1'
 
-waitfor delay '00:00:05'
+waitfor delay '00:00:010'
 
 select * from smtr.op.account_master 
 

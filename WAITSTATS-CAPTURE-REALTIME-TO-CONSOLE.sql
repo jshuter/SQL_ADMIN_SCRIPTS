@@ -7,7 +7,6 @@ select *
 into #tmp1
 from sys.dm_os_wait_stats 
 where 
---wait_type like '%CX%' AND 
 (waiting_tasks_count <> 0 or wait_time_ms <> 0 or max_wait_time_ms <> 0 or  signal_wait_time_ms <> 0 ) 
 order by waiting_tasks_count desc 
 
