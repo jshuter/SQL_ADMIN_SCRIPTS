@@ -1,3 +1,7 @@
+-- EXPERIMENTAL 
+
+
+-- sp_readerrorlog for dbs 
 
 -- LOG INTO PR to get PR data !!!
 USE msdb

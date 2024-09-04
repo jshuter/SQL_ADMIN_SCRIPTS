@@ -1,3 +1,5 @@
+-- GET DATABASE BACKUP INFO 
+
 use master; 
 go
 
@@ -23,9 +25,12 @@ EXECUTE sp_msforeachdb @cmd
 
 
 
+RETURN 
 
 
+use msdb 
 
+SELECT * FROM backupfile WHERE logical_name = 'SMTR' AND BACKUP_SIZE > 0 
 
-
+SELECT TOP 1000 * FROM backupset WHERE database_name = 'SMTR' AND TYPE <> 'l' ORDER BY backup_start_date DESC 
 

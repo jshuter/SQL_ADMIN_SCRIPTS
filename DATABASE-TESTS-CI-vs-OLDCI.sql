@@ -5,6 +5,9 @@ USE SMTR
 select min(teststarttime)st, max(TestEndTime) et from CI.SMTR.tSQLt.TestResult
 select * from CI.SMTR.tSQLt.TestResult
 
+FEB 6th was start of WAREHOUSE USE !!!!!!!
+
+
 */
 
 -- 1 find the slower (or faster) reults 
@@ -18,7 +21,7 @@ with TESTS as
 ( 
 	select *, cast(teststarttime as DATE) D2,  datediff(MILLISECOND, teststarttime, TestEndTime) t
 	from PR.electrumWarehouse.fact.TestResultHistory
-	where source = 'QWINVCI01' and cast(teststarttime as date) = cast(dateadd(DAY, -11, getdate()) as date)
+	where source = 'QWINVCI01' and cast(teststarttime as date) = cast(dateadd(DAY, -16, getdate()) as date)
 ) , 
 REPORT AS ( 
 	select 	TESTS.testcase, OLDCI.D2, TESTS.D1, 
@@ -44,10 +47,14 @@ return
 select * ,  datediff(MILLISECOND, teststarttime, TestEndTime) DURATION
 from 
 	PR.electrumWarehouse.fact.TestResultHistory 
-where teststarttime > cast(dateadd(DAY, -14, getdate()) as date)
+where teststarttime > cast(dateadd(DAY, -20, getdate()) as date)
 	and
-	testcase = 'Test-REPORT_DealerExposure'
-
+	testcase in(
+		'Test-REPORT_DealerExposure',
+		'Test Hedge_Fund_Attrib_Monthly_Sub_Strategy',
+		'Test-TOOLS_REPORT_PME_Details_Asset_Class',
+		'Test-TOOLS_REPORT_PME_Details')
+order by source, testcase, TestStartTime
 return 
 
 

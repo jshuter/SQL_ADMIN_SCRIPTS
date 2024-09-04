@@ -1,32 +1,25 @@
+USE ElectrumPersistent
+GO 
+/* 
+A proc to record wait stats for performance monitoring 
+*/
+
 drop table if exists #tmp1
 drop table if exists #tmp2
 
-
 -- include vs exclude 
-select * 
-into #tmp1
+select * into #tmp1 
 from sys.dm_os_wait_stats 
-where 
-(waiting_tasks_count <> 0 or wait_time_ms <> 0 or max_wait_time_ms <> 0 or  signal_wait_time_ms <> 0 ) 
-order by waiting_tasks_count desc 
-
-select * 
-from sys.dm_os_wait_stats 
-where 
-wait_type like '%CX%'
-AND ( waiting_tasks_count <> 0 or wait_time_ms <> 0 or max_wait_time_ms <> 0 or  signal_wait_time_ms <> 0 ) 
+where (waiting_tasks_count + wait_time_ms + max_wait_time_ms + signal_wait_time_ms > 0) 
 order by waiting_tasks_count desc 
 
 select 1
 waitfor delay '00:00:05'
 select 2
 
-select * 
-into #tmp2
+select * into #tmp2
 from sys.dm_os_wait_stats 
-where 
---wait_type like '%CX%' AND 
-(waiting_tasks_count <> 0 or wait_time_ms <> 0 or max_wait_time_ms <> 0 or  signal_wait_time_ms <> 0 ) 
+where (waiting_tasks_count + wait_time_ms + max_wait_time_ms + signal_wait_time_ms > 0) 
 order by waiting_tasks_count desc 
 
 
