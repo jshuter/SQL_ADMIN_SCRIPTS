@@ -1,3 +1,5 @@
+--USE SMTR same for both 
+--use master 
 
 	SELECT 
 				CAST(SJV.Name AS VARCHAR(100)) Job_Name, 
@@ -11,7 +13,7 @@
 	WHERE 
 		SSLV.enabled = 1 
 		AND SJV.Name LIKE 'smtr%' 
-		AND run_status <> 1
+--		AND run_status <> 1
 --		AND SJV.Name <> 'SMTR_CustomLoadProcessorLog_Monitor'
 	ORDER BY 
 		4 desc 

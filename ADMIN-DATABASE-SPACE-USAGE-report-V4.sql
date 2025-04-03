@@ -1,4 +1,6 @@
 
+ DBCC SQLPERF (LOGSPACE) -- Extra space report for all db LOGs
+
 --------------------------------------------------------------------------------- 
 --Database Backups for all databases For Previous X Weeks
 --------------------------------------------------------------------------------- 

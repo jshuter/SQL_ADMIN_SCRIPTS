@@ -1,11 +1,59 @@
-USE investments_dw
-
 --- GET REPORT ON ALL INDEXES !!!!!
-SELECT OBJECT_NAME(object_id) as OBNAME, page_count PageCount, avg_fragmentation_in_percent pctFrag, * 
-FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, NULL) indexstats 
-order by 
-page_count desc,
-avg_fragmentation_in_percent desc
+
+--USE SMTR;  
+
+use ElectrumWarehouse
+
+DECLARE @ShowAll BIT = 0; 
+
+SELECT 
+	OBJECT_NAME(A.object_id) as ObjectName,
+	B.[name] as IndexName,
+	page_count PageCount, 
+	avg_fragmentation_in_percent pctFrag, 
+	* 
+FROM 
+	sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, NULL) A
+	JOIN sys.Indexes B ON B.Index_id = A.INDEX_ID and B.object_id = A.Object_ID
+WHERE 
+	avg_fragmentation_in_percent > 20
+	and page_count > 100
+	OR @ShowAll=1 
+ORDER BY  
+	1,2,
+	index_type_desc,
+	page_count desc, 
+	avg_fragmentation_in_percent desc
+
+
+
+RETURN 
+
+
+SELECT 
+	OBJECT_NAME(object_id) as OBNAME,
+	page_count PageCount, 
+	avg_fragmentation_in_percent pctFrag, 
+	* 
+FROM 
+	sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, NULL) indexstats
+ORDER BY  
+	index_type_desc,
+	page_count desc, 
+	avg_fragmentation_in_percent desc
+
+RETURN 
+
+
+-----------------------
+
+-- FIX WH TAble ?
+SELECT OBJECT_NAME(object_id) as OBNAME, * FROM sys.dm_db_index_physical_stats(DB_ID(),OBJECT_ID('fact.PrivateReportCardQtdDistributionsFacts'), NULL, NULL, NULL) indexstats 
+SELECT COUNT(*) from fact.PrivateReportCardQtdDistributionsFacts
+ALTER INDEX ALL ON fact.PrivateReportCardQtdDistributionsFacts  REORGANIZE ;  --- RECOMPUTE OUT OF DATE STATS !!!
+SELECT OBJECT_NAME(object_id) as OBNAME, * FROM sys.dm_db_index_physical_stats(DB_ID(),OBJECT_ID('fact.PrivateReportCardQtdDistributionsFacts'), NULL, NULL, NULL) indexstats 
+SELECT COUNT(*) from fact.PrivateReportCardQtdDistributionsFacts 
+
 
 --obname 
 

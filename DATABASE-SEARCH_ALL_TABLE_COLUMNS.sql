@@ -1,7 +1,7 @@
 USE SMTR
 GO 
 
-declare @value varchar(100) = 'CMAF00680002'
+declare @value varchar(100) = 'USPRME002386US'
 
 DROP TABLE IF EXISTS ##TMP_JEFFS_REPORT
 
@@ -15,7 +15,7 @@ SELECT ''' + TABLE_SCHEMA + '.' + TABLE_NAME + '.' + COLUMN_NAME + ''' as C, COU
 FROM ' + TABLE_CATALOG + '.' + TABLE_SCHEMA + '.' + TABLE_NAME + ' WHERE ' + COLUMN_NAME + '=''' +@value+ '''' 
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE DATA_TYPE like '%char%'
---AND COLUMN_NAME like '%ISIN%'
+AND COLUMN_NAME like '%ISIN%'
 
 declare @CMD nvarchar(2000) 
 

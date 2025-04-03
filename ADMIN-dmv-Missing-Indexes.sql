@@ -1,31 +1,42 @@
-use netForumSCOUTSTest
+use ElectrumWarehouse
+
+
+USE ElectrumWarehouse
+
+--- GET REPORT ON ALL INDEXES !!!!!
+SELECT OBJECT_NAME(object_id) as OBNAME, page_count PageCount, avg_fragmentation_in_percent pctFrag, * 
+FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, NULL) indexstats 
+order by 1,
+page_count desc,
+avg_fragmentation_in_percent desc
+
 
 --drop table #junk1
-drop table #junk2
+--drop table #junk2
 go 
 
-select s.group_handle
-,s.unique_compiles
-,s.user_seeks
-,s.last_user_seek
-,s.avg_user_impact
-,d.database_id
-,d.object_id
-,d.equality_columns
-,d.inequality_columns
-,d.included_columns 
-,d.statement
-
-INTO #JUNK2
-
- from sys.dm_db_missing_index_group_stats s
-join sys.dm_db_missing_index_groups g on g.index_group_handle = s.group_handle
-join sys.dm_db_missing_index_details D on g.index_handle = D.index_handle
+select 
+	s.group_handle
+	,s.unique_compiles
+	,s.user_seeks
+	,s.last_user_seek
+	,s.avg_user_impact
+	,d.database_id
+	,d.object_id
+	,d.equality_columns
+	,d.inequality_columns
+	,d.included_columns 
+	,d.statement
+--INTO #JUNK2
+from 
+	sys.dm_db_missing_index_group_stats s
+	join sys.dm_db_missing_index_groups g on g.index_group_handle = s.group_handle
+	join sys.dm_db_missing_index_details D on g.index_handle = D.index_handle
 -- order by user_seeks desc
 order by last_user_seek desc 
 
-select * from #junk1 order by last_user_seek desc 
-select * from #junk2 order by last_user_seek desc 
+--select * from #junk1 order by last_user_seek desc 
+--select * from #junk2 order by last_user_seek desc 
 
 
 -- LOGIN 
